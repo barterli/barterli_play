@@ -6,6 +6,7 @@ import javax.persistence.*;
 import models.entities.converter.AdminTypeConverter;
 import models.entities.enums.AdminType;
 import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
 
 
 /**
@@ -13,6 +14,7 @@ import play.db.jpa.JPA;
  */
 
 @Entity
+@Table(name="users")
 public class User implements EntityTimeStamp{
 
     @Id
@@ -23,7 +25,7 @@ public class User implements EntityTimeStamp{
 
     private String lastName;
 
-    private Integer email;
+    private String email;
 
     private String password;
 
@@ -31,7 +33,7 @@ public class User implements EntityTimeStamp{
 
     private Integer countryCode;
 
-    private String latLong;
+    private Double latLong;
 
     private String city;
 
@@ -66,11 +68,11 @@ public class User implements EntityTimeStamp{
         this.lastName = lastName;
     }
 
-    public Integer getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(int email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -90,11 +92,11 @@ public class User implements EntityTimeStamp{
         this.mobileNumber = mobileNumber;
     }
 
-    public String getLatLong() {
+    public Double getLatLong() {
         return latLong;
     }
 
-    public void setLatLong(String latLong) {
+    public void setLatLong(Double latLong) {
         this.latLong = latLong;
     }
 
@@ -126,6 +128,10 @@ public class User implements EntityTimeStamp{
         return JPA.em().find(User.class, id);
     }
 
+    public Integer getAdminType(){
+       return adminType.getValue();
+    }
+
     @Override
     public void setTimeStamp(TimeStamp timeStamp) {
         this.timeStamp = timeStamp;
@@ -136,5 +142,11 @@ public class User implements EntityTimeStamp{
         return timeStamp;
     }
 
+    public static User create(User user){
+        JPA.withTransaction(() -> {
+            JPA.em().persist(user);
+        });
+        return user;
+    }
 }
 

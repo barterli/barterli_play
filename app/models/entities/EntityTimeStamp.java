@@ -1,5 +1,6 @@
 package models.entities;
 
+
 /**
  * Created by suren on 12/9/15.
  */

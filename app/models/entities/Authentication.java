@@ -16,12 +16,16 @@ public class Authentication implements EntityTimeStamp {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable=false)
     private String provider;
 
+    @Column(nullable=false)
     private String token;
 
+    @Column(nullable=false)
     private String uid;
 
+    @Column(nullable=false)
     private String tokenSecret;
 
     public Long getId() {

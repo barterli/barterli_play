@@ -1,31 +1,30 @@
-CREATE TABLE users (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    email varchar(255) NOT NULL,
-    password varchar(255) NOT NULL,
-    first_name varchar(255) NOT NULL,
-    nickname varchar(255) NOT NULL,
-    last_name varchar(255) NOT NULL,
-    lat_long varchar(255) NOT NULL,
-    city varchar(255) NOT NULL,
-    country varchar(255) NOT NULL,
-    address varchar(255) NOT NULL,
-    admin_type ENUM(1,2,3,4,5) DEFAULT 1,
-    mobile_number int(11),
-    country_code int(5),
-    PRIMARY KEY (id),
-    INDEX phone_no (mobile_number, country_code),
-    INDEX email
+# Users schema
+
+# --- !Ups
+CREATE TABLE `users` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `p_id` BIGINT(20),
+    `email` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `first_name` VARCHAR(255) NOT NULL,
+    `nickname` VARCHAR(255),
+    `last_name` VARCHAR(255),
+    `lat` DECIMAL(11, 8) DEFAULT 0,
+    `lng` DECIMAL(10, 8) DEFAULT 0,
+    `city` VARCHAR(255) NOT NULL,
+    `country` VARCHAR(255) NOT NULL,
+    `address` VARCHAR(255),
+    `admin_type` ENUM('1','2','3','4','5') DEFAULT 1,
+    `status` tinyINT DEFAULT 1,
+    `mobile_number` INT(15),
+    `country_code` INT(5),
+    `created_at` TIMESTAMP,
+    `updated_at` TIMESTAMP,
+    PRIMARY KEY (`id`),
+    INDEX `full_mobile_number` (`mobile_number`, `country_code`),
+    INDEX `email` (`email`),
+    UNIQUE KEY `country_mobile_number` (`mobile_number`,`country_code`)
 );
 
-CREATE TABLE authentications (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    user_id bigint(20),
-    uid bigint(20),
-    provider varchar(255) NOT NULL,
-    token varchar(255) NOT NULL,
-    token_secret varchar(255) NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(id),
-    INDEX user_id,
-    INDEX uid
-);
+# --- !Downs
+DROP TABLE users;
